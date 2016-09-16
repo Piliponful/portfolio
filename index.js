@@ -15,6 +15,8 @@ const http = require('http'),
         'jpeg' : 'image/jpeg'
       };
 
+//If or when i would need svg serving - 'svg' : 'image/svg+xml'
+
 http.createServer((req, res) => {
 
     var pathName = url.parse(req.url).pathname,
@@ -34,11 +36,16 @@ http.createServer((req, res) => {
 
     if(stats.isFile()){
 
-        var mimeType = mimeTypes[path.extname(fileName).slice(1)];
+        var ext      = path.extname(fileName).slice(1),
+            mimeType = mimeTypes[ext];
 
         res.writeHead(200, {'Content-type': mimeType});
+
         var readStream = fs.createReadStream(fileName);
-        readStream.pipe(gzip).pipe(res);
+
+        if(mimeType.search('image') === -1)
+          readStream.pipe(gzip).pipe(res);
+
         readStream.on('end', () => {
             console.log("All data are send properly and streaming is ended. Shut down the response!");
             res.end();
