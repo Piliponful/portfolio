@@ -3,7 +3,7 @@ const http = require('http'),
       url  = require('url'),
       path = require('path'),
       fs   = require('fs'),
-      gzip = request('zlib').createGzip(),
+      gzip = require('zlib').createGzip(),
 
 //Array(or object) of M(multipurpose) I(internet) M(mail) E(extensions) - MIME types
       mimeTypes = {
